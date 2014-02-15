@@ -1,0 +1,5 @@
+:accounts:
+  Campfire:
+    :provider: campfire
+    :token: XXX
+    :subdomain: XXX

@@ -1,0 +1,7 @@
+#!/usr/bin/env ruby
+
+Dir[File.expand_path('../../vendor/**/lib', __FILE__)].each &$:.method(:unshift)
+$:.unshift File.expand_path('../../lib', __FILE__)
+
+require 'ash'
+Ash.launch
