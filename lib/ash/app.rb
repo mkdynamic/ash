@@ -20,8 +20,8 @@ module Ash
       Curses.start_color
       Curses.use_default_colors
       #Curses.init_color Curses::COLOR_BLUE, 1000, 0, 0
-      Curses.init_pair 1, 27, -1
-      Curses.init_pair 2, 15, 27
+      Curses.init_pair 1, Curses::COLOR_WHITE, -1 # -1 is transparent/none
+      Curses.init_pair 2, Curses::COLOR_WHITE, Curses::COLOR_BLUE
       Curses.noecho
       Curses.raw
 
