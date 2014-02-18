@@ -1,9 +1,12 @@
+require 'thread'
+
 module Ash
   class InputController
-    def initialize(parent_window, messages)
+    def initialize(view, messages)
       @prompt = ">"
       @cursor = { x: 0, y: 0 }
-      @window = parent_window.subwin(1, Curses.cols, Curses.lines - 1, 0)
+      @window = view.win
+      @view = view
       @window.addstr @prompt
       @window.setpos @cursor[:y], @cursor[:x] + @prompt.size + 1
 
@@ -30,12 +33,27 @@ module Ash
         10 => :process_buffer!,
         3 => :quit!,
         1 => :cursor_to_start,
-        5 => :cursor_to_end
+        5 => :cursor_to_end,
+        Curses::KEY_RESIZE => :command_resize
       }
+
+      @update_queue = Queue.new
+      @update_thread = Thread.new do
+        loop do
+          char = @update_queue.pop
+          next if char.nil?
+          handle char, @commands
+          update
+        end
+      end
     end
 
-    def redraw
-      @window.resize(1, Curses.cols)
+    def command_resize
+      Ash.app.resize
+    end
+
+    def relayout(layout)
+      @view.relayout(layout)
       update
     end
 
@@ -258,9 +276,12 @@ module Ash
 
     def listen
       loop do
-        char = @window.getch
-        handle char, @commands
-        update
+        #@update_queue << @window.getch
+
+        char = @window.getch#@update_queue.pop
+          next if char.nil?
+          handle char, @commands
+          update
       end
     end
   end
