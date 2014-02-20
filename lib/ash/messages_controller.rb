@@ -76,7 +76,9 @@ module Ash
         @scroll_y += 1 if @buffer_lines.size > lines
       end
 
-      repaint
+      if opts[:no_repaint].nil?
+        repaint
+      end
     end
 
     def repaint

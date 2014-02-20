@@ -3,3 +3,9 @@
     :provider: campfire
     :token: XXX
     :subdomain: XXX
+  Slack:
+    :provider: slack
+    :token: XXX
+    :team: XXX
+    :user_id: XXX
+    :username: XXX

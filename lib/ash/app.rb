@@ -74,6 +74,7 @@ module Ash
       @current_room.connect
       @room_listener = Thread.new { @current_room.listen }
       @current_room.load_recent
+      @messages.repaint
     end
 
     def disconnect_current_room
